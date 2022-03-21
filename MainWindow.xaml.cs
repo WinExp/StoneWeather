@@ -98,7 +98,7 @@ namespace StoneWeather
         internal void SaveBotToken(object sender, RoutedEventArgs e)
         {
             ConfigSet cs = new ConfigSet("Stone Weather\\Config.ini", true);
-            byte[] ByteData = Encoding.UTF8.GetBytes(this.BotTokenPasswordBox.Password);
+            byte[] ByteData = Encoding.UTF8.GetBytes(this.BotTokenPasswordBox.SecurePassword.ToString());
             byte[] EncryptedData = null;
             using (Class.Crypto.AES AES = new Class.Crypto.AES())
             {
