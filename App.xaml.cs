@@ -21,7 +21,6 @@ namespace StoneWeather
             {
                 AutoUpdater.DownloadPath = AppDomain.CurrentDomain.BaseDirectory + "Stone Weather\\UpdateFiles";
                 AutoUpdater.UpdateMode = Mode.Forced;
-                AutoUpdater.RunUpdateAsAdmin = false;
                 AutoUpdater.Start("https://we-bucket.oss-cn-shenzhen.aliyuncs.com/App/Stone%20Weather/Update/UpdateInfo.xml");
                 File file = new File();
                 file.WriteStringInFile("", false);

@@ -37,7 +37,6 @@ namespace StoneWeather.Class.Tools
 
         internal void WriteByteInFile(byte[] Content, FileMode mode)
         {
-            if (!System.IO.File.Exists(this.FilePath)) { using (new StreamWriter(this.FilePath)) { } }
             using (FileStream fs = new FileStream(this.FilePath, mode, FileAccess.Write))
             {
                 fs.Write(Content, 0, Content.Length);
