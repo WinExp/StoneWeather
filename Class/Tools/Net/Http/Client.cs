@@ -14,8 +14,8 @@ namespace StoneWeather.Class.Tools.Net.Http
         {
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetStringAsync(Uri);
-                return response;
+                var response = await client.GetAsync(Uri);
+                return await response.Content.ReadAsStringAsync();
             }
         }
         #endregion

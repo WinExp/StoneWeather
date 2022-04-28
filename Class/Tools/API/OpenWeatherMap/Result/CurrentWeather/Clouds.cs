@@ -5,24 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StoneWeather.Class.Tools.API.OpenWeatherMap.Result.OpenWeatherMap
+namespace StoneWeather.Class.Tools.API.OpenWeatherMap.Result.CurrentWeather
 {
-    internal class Coord
+    internal class Clouds
     {
         #region 声明字段
-        internal double Longitude { get; }
-        internal double Latitude { get; }
+        internal double All { get; }
         #endregion
 
         #region 构造方法
-        internal Coord(JToken CoordData)
+        internal Clouds(JToken WeatherData)
         {
-            if (CoordData == null)
+            if (WeatherData == null)
             {
                 throw new ArgumentNullException("The value cannot be null.");
             }
-            this.Longitude = CoordData.Value<double>("lon");
-            this.Latitude = CoordData.Value<double>("lat");
+            this.All = WeatherData.Value<int>("all");
         }
         #endregion
     }

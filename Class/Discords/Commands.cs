@@ -88,17 +88,27 @@ namespace StoneWeather.Class.Discords
         {
             UpdateLang();
             string Author = $"{CommandHandler.message.Author.Username}#{CommandHandler.message.Author.Discriminator}";
-            var WeatherInfo = await Tools.API.OpenWeatherMap.OpenWeatherMapAPI.GetWeatherAsync("98f7ba2a3a339b38b21a199b146425f3", City, Lang.Language[Author].Name);
+            await ReplyAsync(Lang.Language[Author].SearchingWeatherTip);
+            Tools.API.OpenWeatherMap.Result.CurrentWeather.WeatherResult WeatherInfo = null;
+            try
+            {
+                WeatherInfo = await Tools.API.OpenWeatherMap.OpenWeatherMapAPI.GetCurrentWeatherResultAsync("98f7ba2a3a339b38b21a199b146425f3", City, Lang.Language[Author].Name);
+            }
+            catch (ArgumentException ex)
+            {
+                await ReplyAsync(Lang.Language[Author].CityIsNotCorrectTip);
+                return;
+            }
             var embed = new EmbedBuilder
             {
-                Title = Lang.Language[Author].GetCityName(City),
+                Title = Lang.Language[Author].GetCityName(WeatherInfo.Name),
                 Color = Color.Green,
                 ImageUrl = $"https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/{WeatherInfo.Weather.Icon}.png"
             };
-            embed.AddField(Lang.Language[Author].Weather_CurrentTemp_Name, $"{WeatherInfo.Main.CelsiusTemp}°C", true);
-            embed.AddField(Lang.Language[Author].Weather_MaxTemp_Name, $"{WeatherInfo.Main.CelsiusTemp_Max}°C", true);
-            embed.AddField(Lang.Language[Author].Weather_MinTemp_Name, $"{WeatherInfo.Main.CelsiusTemp_Min}°C", true);
-            embed.AddField(Lang.Language[Author].Weather_Feels_Like_Name, $"{WeatherInfo.Main.CelsiusFeels_Like}°C", true);
+            embed.AddField(Lang.Language[Author].Weather_CurrentTemp_Name, $"{WeatherInfo.Main.Temp}°C", true);
+            embed.AddField(Lang.Language[Author].Weather_MaxTemp_Name, $"{WeatherInfo.Main.Temp_Max}°C", true);
+            embed.AddField(Lang.Language[Author].Weather_MinTemp_Name, $"{WeatherInfo.Main.Temp_Min}°C", true);
+            embed.AddField(Lang.Language[Author].Weather_Feels_Like_Name, $"{WeatherInfo.Main.Feels_Like}°C", true);
             embed.AddField(Lang.Language[Author].Weather_Description_Name, $"{WeatherInfo.Weather.Description}", true);
             embed.AddField(Lang.Language[Author].Weather_Humidity_Name, $"{WeatherInfo.Main.Humidity} %", true);
             await ReplyAsync(embed: embed.Build());

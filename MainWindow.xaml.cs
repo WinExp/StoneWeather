@@ -55,12 +55,8 @@ namespace StoneWeather
         #region UI 元素方法
         internal async void StartBot(object sender, RoutedEventArgs e)
         {
-            if (!this.StartBotButton.IsEnabled)
-            {
-                return;
-            }
-            ButtonHelper.SetIsPending(this.StartBotButton, true);
             this.StartBotButton.IsEnabled = false;
+            ButtonHelper.SetIsPending(this.StartBotButton, true);
             Task.Run(async () =>
             {
                 await this.Bot.Connect(this.BotTokenPasswordBox.Password);
@@ -78,12 +74,8 @@ namespace StoneWeather
 
         internal async void StopBot(object sender, RoutedEventArgs e)
         {
-            if (!this.StopBotButton.IsEnabled)
-            {
-                return;
-            }
-            ButtonHelper.SetIsPending(this.StopBotButton, true);
             this.StopBotButton.IsEnabled = false;
+            ButtonHelper.SetIsPending(this.StopBotButton, true);
             Task.Run(async () =>
             {
                 await this.Bot.Disconnect();
@@ -97,8 +89,10 @@ namespace StoneWeather
 
         internal void SaveBotToken(object sender, RoutedEventArgs e)
         {
+            this.SaveBotTokenButton.IsEnabled = false;
+            ButtonHelper.SetIsPending(this.SaveBotTokenButton, true);
             ConfigSet cs = new ConfigSet("Stone Weather\\Config.ini", true);
-            byte[] ByteData = Encoding.UTF8.GetBytes(this.BotTokenPasswordBox.SecurePassword.ToString());
+            byte[] ByteData = Encoding.UTF8.GetBytes(this.BotTokenPasswordBox.Password);
             byte[] EncryptedData = null;
             using (Class.Crypto.AES AES = new Class.Crypto.AES())
             {
@@ -107,7 +101,9 @@ namespace StoneWeather
             }
             cs.SetConfigValue("BotToken", Convert.ToBase64String(EncryptedData));
             cs.WriteConfigToFile(ConfigFile.newFile);
-            #endregion
+            ButtonHelper.SetIsPending(this.SaveBotTokenButton, false);
+            this.SaveBotTokenButton.IsEnabled = true;
         }
+        #endregion
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StoneWeather.Class.Tools.API.OpenWeatherMap.Result.OpenWeatherMap
+namespace StoneWeather.Class.Tools.API.OpenWeatherMap.Result.CurrentWeather
 {
     internal class Sys
     {

@@ -20,6 +20,8 @@ namespace StoneWeather.Resources.Language
         internal string Weather_Feels_Like_Name;
         internal string Weather_Description_Name;
         internal string Weather_Humidity_Name;
+        internal string CityIsNotCorrectTip;
+        internal string SearchingWeatherTip;
 
         internal virtual string GetCityName(string CityName) { return null; }
 

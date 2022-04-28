@@ -26,6 +26,8 @@ Example: s!config Lang en_US";
         internal readonly new string Weather_Feels_Like_Name = "Feels Like";
         internal readonly new string Weather_Description_Name = "Weather";
         internal readonly new string Weather_Humidity_Name = "Humidity";
+        internal readonly new string CityIsNotCorrectTip = "The city you entered does not exist.";
+        internal readonly new string SearchingWeatherTip = "Checking the weather...";
 
         internal en_US()
         {
@@ -41,11 +43,13 @@ Example: s!config Lang en_US";
             base.Weather_Feels_Like_Name = this.Weather_Feels_Like_Name;
             base.Weather_Description_Name = this.Weather_Description_Name;
             base.Weather_Humidity_Name = this.Weather_Humidity_Name;
+            base.CityIsNotCorrectTip = this.CityIsNotCorrectTip;
+            base.SearchingWeatherTip = this.SearchingWeatherTip;
         }
 
         internal override string GetCityName(string CityName)
         {
-            return $"{CityName}'s Weather";
+            return $"Current Weather in {CityName}";
         }
 
         internal override string GetLanguage_Configured_Tip(string Author, string LanguageName)

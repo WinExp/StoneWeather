@@ -42,7 +42,6 @@
                     pu:ButtonHelper.CornerRadius="4"
                     pu:ButtonHelper.ShadowColor="#36AAF7"
                     pu:ShadowHelper.BlurRadius="15"
-                    pu:ButtonHelper.IsPending="False"
                     pu:ShadowHelper.ShadowDepth="5">
                 <pu:ButtonHelper.PendingSpinnerStyle>
                     <Style TargetType="pu:Spinner"
@@ -66,7 +65,7 @@
                          pu:ShadowHelper.BlurRadius="15"
                          pu:ShadowHelper.ShadowDepth="5">
             </PasswordBox>
-            <Button Height="40"
+            <Button Name="SaveBotTokenButton" Height="40"
                     Width="150"
                     Content="⚙ 保存"
                     Margin="0,5,0,0"
@@ -76,8 +75,16 @@
                     pu:ButtonHelper.CornerRadius="4"
                     pu:ButtonHelper.ShadowColor="#36AAF7"
                     pu:ShadowHelper.BlurRadius="15"
-                    pu:ButtonHelper.IsPending="False"
                     pu:ShadowHelper.ShadowDepth="5">
+                <pu:ButtonHelper.PendingSpinnerStyle>
+                    <Style TargetType="pu:Spinner"
+               BasedOn="{StaticResource {x:Static pu:ButtonHelper.PendingSpinnerStyle}}">
+                        <Setter Property="Margin"
+                    Value="0,0,10,0" />
+                        <Setter Property="SpinnerStyle"
+                    Value="Ring2" />
+                    </Style>
+                </pu:ButtonHelper.PendingSpinnerStyle>
             </Button>
         </StackPanel>
     </Grid>

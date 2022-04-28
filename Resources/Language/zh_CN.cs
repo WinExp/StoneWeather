@@ -26,6 +26,8 @@ namespace StoneWeather.Resources.Language
         internal readonly new string Weather_Feels_Like_Name = "感受温度";
         internal readonly new string Weather_Description_Name = "天气情况";
         internal readonly new string Weather_Humidity_Name = "湿度";
+        internal readonly new string CityIsNotCorrectTip = "您输入的城市不存在。";
+        internal readonly new string SearchingWeatherTip = "正在查询天气...";
 
         internal zh_CN()
         {
@@ -41,11 +43,13 @@ namespace StoneWeather.Resources.Language
             base.Weather_Description_Name = this.Weather_Description_Name;
             base.Weather_Humidity_Name= this.Weather_Humidity_Name;
             base.CommandHelp_Config_Description = this.CommandHelp_Config_Description;
+            base.CityIsNotCorrectTip = this.CityIsNotCorrectTip;
+            base.SearchingWeatherTip = this.SearchingWeatherTip;
         }
 
         internal override string GetCityName(string CityName)
         {
-            return $"{CityName} 的天气";
+            return $"当前 {CityName} 的天气";
         }
 
         internal override string GetLanguage_Configured_Tip(string Author, string LanguageName)
