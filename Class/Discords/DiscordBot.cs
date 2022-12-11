@@ -1,16 +1,9 @@
 ﻿using Discord;
-using Discord.Commands;
-using Discord.Net;
 using Discord.Net.Rest;
-using Discord.Rest;
 using Discord.WebSocket;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StoneWeather.Class.Discords
@@ -19,8 +12,6 @@ namespace StoneWeather.Class.Discords
     {
         #region 声明字段
         internal DiscordSocketClient Client;
-        internal CommandService Commands;
-        private readonly IServiceProvider Services;
         #endregion
 
         #region 核心方法
@@ -31,10 +22,49 @@ namespace StoneWeather.Class.Discords
                 RestClientProvider = DefaultRestClientProvider.Create(useProxy)
             };
             this.Client = new DiscordSocketClient(config);
-            this.Commands = new CommandService();
             this.Client.Log += Log;
-            CommandHandler handler = new CommandHandler(this.Client, this.Commands, this.Services);
-            this.Client.Ready += handler.InstallCommandsAsync;
+            this.Client.Ready += Client_Ready;
+            this.Client.SlashCommandExecuted += Client_SlashCommandExecuted;
+        }
+
+        private async Task Client_SlashCommandExecuted(SocketSlashCommand arg)
+        {
+            switch (arg.CommandName)
+            {
+                case "help":
+                    await Commands.Help(arg);
+                    break;
+                case "sw":
+                    string city = arg.Data.Options.First().Value.ToString();
+                    await Commands.SearchWeather(city, arg);
+                    break;
+                case "config":
+                    string name = Commands.ConfigNames[(long)arg.Data.Options.First().Value];
+                    string value = arg.Data.Options.Last().Value.ToString();
+                    await Commands.Config(name, value, arg);
+                    break;
+            }
+        }
+
+        private async Task Client_Ready()
+        {
+            var helpCommand = new SlashCommandBuilder()
+            .WithName("help")
+            .WithDescription("获取 Stone Weather 帮助。");
+            await Client.CreateGlobalApplicationCommandAsync(helpCommand.Build());
+
+            var swCommand = new SlashCommandBuilder()
+            .WithName("sw")
+            .WithDescription("获取天气。")
+            .AddOption("city", ApplicationCommandOptionType.String, "你想要查找的城市。", true);
+            await Client.CreateGlobalApplicationCommandAsync(swCommand.Build());
+
+            var configCommand = new SlashCommandBuilder()
+            .WithName("config")
+            .WithDescription("更改配置。")
+            .AddOption(new SlashCommandOptionBuilder().WithType(ApplicationCommandOptionType.Integer).WithName("name").WithDescription("配置名称。").WithRequired(true).AddChoice("Lang", 0))
+            .AddOption("value", ApplicationCommandOptionType.String, "配置值。", true);
+            await Client.CreateGlobalApplicationCommandAsync(configCommand.Build());
         }
         #endregion
 

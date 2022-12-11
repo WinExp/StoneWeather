@@ -59,8 +59,8 @@ namespace StoneWeather
             ButtonHelper.SetIsPending(this.StartBotButton, true);
             Task.Run(async () =>
             {
-                await this.Bot.Connect(this.BotTokenPasswordBox.Password);
-                this.Bot.Client.Ready += delegate
+                await Bot.Connect(this.BotTokenPasswordBox.Password);
+                Bot.Client.Ready += delegate
                 {
                     this.Dispatcher.BeginInvoke(() =>
                     {
@@ -78,7 +78,7 @@ namespace StoneWeather
             ButtonHelper.SetIsPending(this.StopBotButton, true);
             Task.Run(async () =>
             {
-                await this.Bot.Disconnect();
+                await Bot.Disconnect();
                 this.Dispatcher.BeginInvoke(() =>
                 {
                     ButtonHelper.SetIsPending(this.StopBotButton, false);

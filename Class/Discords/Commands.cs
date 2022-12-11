@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Discord.WebSocket;
 using StoneWeather.Class.Tools;
 using StoneWeather.Resources.Language;
@@ -11,28 +12,15 @@ using System.Threading.Tasks;
 
 namespace StoneWeather.Class.Discords
 {
-    public class Commands : ModuleBase<SocketCommandContext>
+    public static class Commands
     {
         #region 定义命令
         #region 文本命令
-        [Command("search-weather")]
-        internal async Task SearchWeather(params string[] Countrys)
-        {
-            string Country = GetCountryName(Countrys);
-            SearchWeather(Country);
-        }
+        public static string[] ConfigNames = new string[1] { "Lang" };
 
-        [Command("sw")]
-        internal async Task sw(params string[] Citys)
+        internal static async Task Config(string ConfigName, string ConfigValue, SocketSlashCommand command)
         {
-            string City = GetCountryName(Citys);
-            SearchWeather(City);
-        }
-
-        [Command("config")]
-        internal async Task Config(string ConfigName, string ConfigValue)
-        {
-            string Author = $"{CommandHandler.message.Author.Username}#{CommandHandler.message.Author.Discriminator}";
+            string Author = $"{command.User.Username}#{command.User.Discriminator}";
             switch (ConfigName)
             {
                 case "Lang":
@@ -45,50 +33,39 @@ namespace StoneWeather.Class.Discords
                             Lang.Language[Author] = Lang.en_US;
                             break;
                         default:
-                            await Help();
+                            await Help(command);
                             return;
                     }
                     ConfigSet cs = new ConfigSet("Stone Weather\\Config.ini", true);
                     cs.SetConfigValue(Author, Lang.Language[Author].Name);
                     cs.WriteConfigToFile(ConfigFile.newFile);
-                    await ReplyAsync(Lang.Language[Author].GetLanguage_Configured_Tip(CommandHandler.message.Author.Mention, Lang.Language[Author].Name));
+                    await command.RespondAsync(Lang.Language[Author].GetLanguage_Configured_Tip(command.User.Mention, Lang.Language[Author].Name), ephemeral: true);
                     break;
                 default:
-                    await Help();
+                    await Help(command);
                     break;
             }
         }
 
-        [Command("help")]
-        internal async Task Help()
+        internal static async Task Help(SocketSlashCommand command)
         {
-            UpdateLang();
-            string Author = $"{CommandHandler.message.Author.Username}#{CommandHandler.message.Author.Discriminator}";
+            UpdateLang(command);
+            string Author = $"{command.User.Username}#{command.User.Discriminator}";
             var embed = new EmbedBuilder
             {
                 Title = Lang.Language[Author].Help_Name,
             };
             embed.AddField(Lang.Language[Author].Command, @$"{Lang.Language[Author].CommandHelp_SW_Description}
 
-{Lang.Language[Author].CommandHelp_SearchWeather_Description}
-
 {Lang.Language[Author].CommandHelp_Config_Description}
 ");
-            await ReplyAsync(embed: embed.Build());
+            await command.RespondAsync(embed: embed.Build(), ephemeral: true);
         }
 
-        internal string GetCountryName(string[] Citys)
+        internal static async Task SearchWeather(string City, SocketSlashCommand command)
         {
-            string City = Citys[0];
-            for (int i = 1; i < Citys.Length; i++) { City += " "; City += Citys[i]; }
-            return City;
-        }
-
-        internal async Task SearchWeather(string City)
-        {
-            UpdateLang();
-            string Author = $"{CommandHandler.message.Author.Username}#{CommandHandler.message.Author.Discriminator}";
-            await ReplyAsync(Lang.Language[Author].SearchingWeatherTip);
+            UpdateLang(command);
+            string Author = $"{command.User.Username}#{command.User.Discriminator}";
             Tools.API.OpenWeatherMap.Result.CurrentWeather.WeatherResult WeatherInfo = null;
             try
             {
@@ -96,7 +73,7 @@ namespace StoneWeather.Class.Discords
             }
             catch (ArgumentException ex)
             {
-                await ReplyAsync(Lang.Language[Author].CityIsNotCorrectTip);
+                await command.RespondAsync(Lang.Language[Author].CityIsNotCorrectTip);
                 return;
             }
             var embed = new EmbedBuilder
@@ -111,12 +88,12 @@ namespace StoneWeather.Class.Discords
             embed.AddField(Lang.Language[Author].Weather_Feels_Like_Name, $"{WeatherInfo.Main.Feels_Like}°C", true);
             embed.AddField(Lang.Language[Author].Weather_Description_Name, $"{WeatherInfo.Weather.Description}", true);
             embed.AddField(Lang.Language[Author].Weather_Humidity_Name, $"{WeatherInfo.Main.Humidity} %", true);
-            await ReplyAsync(embed: embed.Build());
+            await command.RespondAsync(embed: embed.Build(), ephemeral: true);
         }
 
-        internal void UpdateLang()
+        internal static void UpdateLang(SocketSlashCommand command)
         {
-            string Author = $"{CommandHandler.message.Author.Username}#{CommandHandler.message.Author.Discriminator}";
+            string Author = $"{command.User.Username}#{command.User.Discriminator}";
             try
             {
                 Lang.Language[Author] = Lang.Language[Author];
@@ -130,10 +107,6 @@ namespace StoneWeather.Class.Discords
             }
         }
         #endregion
-        #endregion
-
-        #region 事件触发
-
         #endregion
     }
 }

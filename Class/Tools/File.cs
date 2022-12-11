@@ -9,12 +9,9 @@ namespace StoneWeather.Class.Tools
 {
     internal class File : IDisposable
     {
-        #region 声明字段
         private string FilePath;
         private bool disposedValue;
-        #endregion
 
-        #region 构造方法
         internal File(string FilePath = "Stone Weather\\Log\\Log1.log")
         {
             if (!Directory.Exists(Path.GetDirectoryName(FilePath)))
@@ -24,9 +21,7 @@ namespace StoneWeather.Class.Tools
             this.FilePath = FilePath;
             if (!System.IO.File.Exists(this.FilePath)) { System.IO.File.Create(this.FilePath); }
         }
-        #endregion
 
-        #region 文件操作方法
         internal void WriteStringInFile(string Content, bool Append = true)
         {
             using (StreamWriter Writer = new StreamWriter(this.FilePath, Append))
@@ -66,9 +61,7 @@ namespace StoneWeather.Class.Tools
                 return Contents;
             }
         }
-        #endregion
 
-        #region 实现 IDisposable
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -97,6 +90,5 @@ namespace StoneWeather.Class.Tools
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
-        #endregion
     }
 }

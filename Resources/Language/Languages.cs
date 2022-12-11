@@ -11,7 +11,6 @@ namespace StoneWeather.Resources.Language
         internal string Name;
         internal string Help_Name;
         internal string Command;
-        internal string CommandHelp_SearchWeather_Description;
         internal string CommandHelp_SW_Description;
         internal string CommandHelp_Config_Description;
         internal string Weather_CurrentTemp_Name;

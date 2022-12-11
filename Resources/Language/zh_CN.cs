@@ -11,15 +11,12 @@ namespace StoneWeather.Resources.Language
         internal readonly new string Name = "zh_CN";
         internal readonly new string Help_Name = "帮助";
         internal readonly new string Command = "指令";
-        internal readonly new string CommandHelp_SearchWeather_Description = @"**s!search-weather**
-用法：s!search-weather <城市/国家名称>
-示例：s!search-weather Shenzhen";
-        internal readonly new string CommandHelp_SW_Description = @"**s!sw**
-用法：s!sw <城市/国家名称>
-示例：s!sw Shenzhen";
-        internal readonly new string CommandHelp_Config_Description = @"**s!config**
-用法: s!config <配置名称> <配置值>
-示例: s!config Lang zh_CN";
+        internal readonly new string CommandHelp_SW_Description = @"**/sw**
+用法：/sw <城市/国家名称>
+示例：/sw Shenzhen";
+        internal readonly new string CommandHelp_Config_Description = @"**/config**
+用法: /config <配置名称> <配置值>
+示例: /config Lang zh_CN";
         internal readonly new string Weather_CurrentTemp_Name = "当前温度";
         internal readonly new string Weather_MaxTemp_Name = "最大温度";
         internal readonly new string Weather_MinTemp_Name = "最小温度";
@@ -34,7 +31,6 @@ namespace StoneWeather.Resources.Language
             base.Name = this.Name;
             base.Help_Name = this.Help_Name;
             base.Command = this.Command;
-            base.CommandHelp_SearchWeather_Description= this.CommandHelp_SearchWeather_Description;
             base.CommandHelp_SW_Description = this.CommandHelp_SW_Description;
             base.Weather_CurrentTemp_Name = this.Weather_CurrentTemp_Name;
             base.Weather_MaxTemp_Name = this.Weather_MaxTemp_Name;
